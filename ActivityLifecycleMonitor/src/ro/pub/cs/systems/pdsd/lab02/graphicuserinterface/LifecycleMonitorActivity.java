@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -74,7 +75,14 @@ public class LifecycleMonitorActivity extends Activity {
         okButton.setOnClickListener(buttonClickListener);
         Button cancelButton = (Button)findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
+        
         Log.d(Constants.TAG, "onCreate() method was invoked");
+        
+        if (savedInstanceState != null) {
+        	Log.d("state", "exista");
+        } else {
+        	Log.d("state", "nu exista");
+        }
     }    
 
     @Override
@@ -82,6 +90,38 @@ public class LifecycleMonitorActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	// TODO Auto-generated method stub
+    	super.onSaveInstanceState(outState);
+    	
+    	
+    	CheckBox checkBox = (CheckBox)findViewById(R.id.remember_me_checkbox);    
+    	
+//    	if(checkBox.isChecked())
+    	{
+    		EditText user = (EditText)findViewById(R.id.username_edit_text);
+    		EditText pass = (EditText)findViewById(R.id.password_edit_text);
+    		
+    		outState.putString("user", user.getText().toString());
+    		outState.putBoolean(checkBox.getText().toString(),true);
+    		
+    	}
+    	
+    }
+    
+    
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	// TODO Auto-generated method stub
+    	super.onRestoreInstanceState(savedInstanceState);
+    	EditText usernameEditText= (EditText)findViewById(R.id.username_edit_text);
+    	if (savedInstanceState.getString("user") != null) {
+	      usernameEditText.setText(savedInstanceState.getString("user"));
+    	}
     }
 
     @Override
@@ -95,4 +135,47 @@ public class LifecycleMonitorActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    @Override
+    protected void onRestart()
+    {
+    	super.onRestart();
+    	Log.d(Constants.TAG, "onRestart method was invoked");
+    }
+    @Override
+    protected void onStart()
+    {
+    	super.onStart();
+    	Log.d(Constants.TAG, "onStart method was invoked");
+    }
+    
+    @Override
+    protected void onResume()
+    {
+    	super.onResume();
+    	Log.d(Constants.TAG, "onResume method was invoked");
+    }
+    
+    @Override
+    protected void onPause()
+    {
+    	super.onPause();
+    	Log.d(Constants.TAG, "onPause method was invoked");
+    }
+    
+    @Override
+    protected void onStop()
+    {
+    	super.onStop();
+    	Log.d(Constants.TAG, "onStop method was invoked");
+    }
+    
+    @Override
+    protected void onDestroy()
+    {
+    	super.onDestroy();
+    	Log.d(Constants.TAG, "onDestroy method was invoked");
+    }
+    
+    
 }
